@@ -13,7 +13,7 @@ test_tree = ET.parse('test.xml')
 gold_root = gold_tree.getroot()
 test_root = test_tree.getroot()
 
-print(gold_root.tag)
+print(gold_root)
 #step 1
 # for i in gold_root.iter(): 
 #     print(i)
@@ -26,8 +26,8 @@ for test_ch in test_root.iter():
     if test_ch.text == None:
         empty_tags.append(test_ch.tag)
         
-for tags in empty_tags:
-    print("ERROR REPORT: TAGS WITH NO DATA: " + tags)
+# for tags in empty_tags:
+#     print("ERROR REPORT: TAGS WITH NO DATA: " + tags)
 
 
 
@@ -35,27 +35,30 @@ for tags in empty_tags:
 
 
 def recursion_xml(file):
-    text = ""
+    text = []
     current_file_length = len(file)
-    print(file, current_file_length)
+    print("current file length = ", current_file_length, file)
     for i in range(current_file_length):
+        if file[i].tag == "Id":
+            print("Id checked")
+            text.append(file[i].text)
         if file[i].tag == "Client":
             print("Client checked")
             parent = file[i]
-            text += recursion_xml(parent)
+            text.append(recursion_xml(parent))
         elif file[i].tag == "Job":
             print("Job checked")
             parent = file[i]
-            text += recursion_xml(parent)
+            text.append(recursion_xml(parent))
             #not sure how to check double nested elements.
         # elif file[i].tag == "Comepensation":
         #     print("Comp checked")
         #     parent = file[i]
         #     print(parent)
         #     text += recursion_xml(parent)
-        elif file[i] == "Type":
-            print("Type checked")
-            text += "{} ".format(file[i].text)
+        elif file[i] == "Frequency":
+            print("Frequency checked")
+            text.append(file[i].text)
     return text
 
-recursion_xml(gold_root)
+print(recursion_xml(gold_root))
