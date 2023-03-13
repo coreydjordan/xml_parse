@@ -1,0 +1,20 @@
+<Request source="DH">
+    <Client>
+        <Name>Sam</Name>
+        <Phone>920-111-5678</Phone>
+    </Client>
+    <Job>
+        <Type>Periodic Maintenance</Type>
+        <Contact>
+            <Name>Bill</Name>
+            <Phone>555-222-8888</Phone>
+        </Contact>
+        <IsScripted>true</IsScripted>
+        <Compensation>
+            <Rate></Rate>
+            <UnitOfMeasure>$/Job</UnitOfMeasure>
+            <Type>Contracted</Type>
+        </Compensation>
+    </Job>
+    <Id>14225455</Id>
+</Request>

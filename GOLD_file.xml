@@ -1,0 +1,20 @@
+<Request source="EMT">
+    <Id>12524862</Id>
+    <Client>
+        <Name>Bob</Name>
+        <Phone>920-555-1234</Phone>
+        <TimeOfDay>Afternoon</TimeOfDay>
+    </Client>
+    <Frequency />
+    <Job>
+        <Location>Remote</Location>
+        <Contact />
+        <Compensation>
+            <Rate>50</Rate>
+            <UnitOfMeasure>$/Hour</UnitOfMeasure>
+            <Type>TimeAndMaterials</Type>
+            <Duration />
+        </Compensation>
+        <Type>Full Transition</Type>
+    </Job>
+</Request>
