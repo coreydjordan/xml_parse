@@ -1,11 +1,12 @@
 #ensure data is present in the tag
 #*if there is data, compare it to the other file
 #*no match = False
-#length of the x.text needs to be the same?
 #!find a way to return false and move on to the next conditional to check that xml property
 #!RECURSION!
 #if n == len(xml_file) return <-- terminate the recrusion with this
-#!ensure TEMPLATE_ID and MARKET_ID are the same before comparing
+#//ensure TEMPLATE_ID and MARKET_ID are the same before comparing
+#!compare test file against GOLD file to see differences.
+#how to check is tag has nested data?
 
 import xml.etree.ElementTree as ET
 import logging as lg
@@ -36,10 +37,6 @@ def elements_equal(elem1, elem2):
     if elem1.attrib != elem2.attrib:
         print(elem1.attrib + " and " + elem2.attrib + " do not match")  
         return False
-    # checks to make sure the length is the same
-    # if len(elem1) != len(elem2):
-    #     print("Lengths are not the same") 
-    #     return False
 #     #all() returns true if ALL items in the iteration are true, otherwise it returns false. if the iteration object is empty, all() also returns true
     return all(elements_equal(c1, c2) for c1, c2 in zip(elem1, elem2))
 
@@ -49,23 +46,23 @@ def parse_xml(f1, f2):
     tree_elem2 = ET.parse(f2)
     root2 = tree_elem2.getroot()
     #find all returns a list that has to be iterated over even though there's only 1 item in the list
-    for ch in root2.findall("./MARKET_ID"):
-        #set the text from the market_id tag to a variable
-        market_id_2 = ch.text
-    for ch in root1.findall("./MARKET_ID"):
-        market_id_1 = ch.text
-    #compare the two variables
-    if market_id_2 == market_id_1:
-        print("TRUE")
-    else:
-        print("FALSE")
+    # for ch in root2.findall("./MARKET_ID"):
+    #     #set the text from the market_id tag to a variable
+    #     market_id_2 = ch.text
+    # for ch in root1.findall("./MARKET_ID"):
+    #     market_id_1 = ch.text
+    # #compare the two variables
+    # if market_id_2 == market_id_1:
+    #     print("TRUE")
+    # else:
+    #     print("FALSE")
     
 
     #function call
     return elements_equal(root1,root2)
 
 # #declaring the two sample xmls as f1 and f2 variables
-f1 = 'sample_2.xml'
-f2 = 'sample_1.xml'
-# #fucntion call
+f1 = 'GOLD_file.xml'
+f2 = 'test.xml'
+# #function call
 print(parse_xml(f1, f2))
