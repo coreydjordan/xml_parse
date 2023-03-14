@@ -48,12 +48,13 @@ def recursion_xml_2(current_node):
     current_file_length = len(current_node)
     for n in range(current_file_length):
         #trying to find any nodes that have nested elements
-        if len(current_node[n]) > 0:
+        if len(current_node[n]) > 0 and current_node[n].text != None:
             #only returns Client and Job, skips over Compensation for some reason
             parent = current_node[n]
             node_list_2.append(recursion_xml_2(parent))
-        if len(current_node[n]) == 0:
-            node_list_2.append(current_node[n].tag)
+        if len(current_node[n]) == 0 and current_node[n].text != None:
+            list_info = current_node[n].tag, current_node[n].text
+            node_list_2.append(list_info)
     return node_list_2
 
 print(recursion_xml_2(test_root))
