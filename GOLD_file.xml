@@ -1,6 +1,6 @@
-<Request source="EMT">
-    <Id>12524862</Id>
-    <Client>
+<Request source="EMT"> <!--gold_root-->
+    <Id>12524862</Id><!--gold_root[0]-->
+    <Client><!--gold_root[1]-->
         <Name>Bob</Name>
         <Phone>920-555-1234</Phone>
         <TimeOfDay>Afternoon</TimeOfDay>
