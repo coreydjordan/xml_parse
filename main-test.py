@@ -75,7 +75,13 @@ def recursion_xml(current_node):
     text = []
     current_file_length = len(current_node)
     for n in range(current_file_length):
-        print(current_node.tag)
+        if len(current_node[n]) > 1:
+            #only returns Client and Job, skips over Compensation for some reason
+            parent = current_node[n]
+            text.append(recursion_xml(parent))
+            print(current_node[n].tag)
+        if len(current_node[n]) == 0:
+            text.append(current_node[n].text)
     return text
 
 print(recursion_xml(gold_root))
