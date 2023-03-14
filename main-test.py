@@ -13,7 +13,7 @@ test_tree = ET.parse('test.xml')
 gold_root = gold_tree.getroot()
 test_root = test_tree.getroot()
 
-print(gold_root)
+# print(gold_root)
 #step 1
 # for i in gold_root.iter(): 
 #     print(i)
@@ -37,7 +37,6 @@ for test_ch in test_root.iter():
 def recursion_xml(file):
     text = []
     current_file_length = len(file)
-    print("current file length = ", current_file_length, file)
     for i in range(current_file_length):
         if file[i].tag == "Id":
             print("Id checked")
@@ -56,7 +55,8 @@ def recursion_xml(file):
         #     parent = file[i]
         #     print(parent)
         #     text += recursion_xml(parent)
-        elif file[i] == "Frequency":
+        elif file[i].tag == "Frequency":
+            #frequency = None
             print("Frequency checked")
             text.append(file[i].text)
     return text
