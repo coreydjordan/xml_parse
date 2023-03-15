@@ -16,9 +16,13 @@ Make sure MARKET_ID and LETTER_TYPE match
 
 Iterate over all files in database and plugging them into the parameters of the function
 '''
-        
-def recursion_xml_1(current_node):
-    param_list = ["GOLD.xml", "test.xml"]
+
+'''
+This first function is to recursively parse the "gold" xml file, the one that the other files will be compared to.
+'''
+      
+def recursion_xml_1(param):
+    param_list = [gold_root, test_root]
     #!xpath to the market_id node
     e_gold = gold_root.findall("Market_ID")
     #!iterate over the e_gold variable because it is a list
@@ -30,45 +34,49 @@ def recursion_xml_1(current_node):
     if term_test != term_gold:
         raise Exception("The Market IDs do not match")
     node_list = []
-    current_file_length = len(current_node)
+    current_file_length = len(param)
     for n in range(current_file_length):
         #!trying to find any nodes that have nested elements 
-        if len(current_node[n]) > 0 and current_node[n].text != None:
+        if len(param[n]) > 0 and param[n].text != None:
             #!only returns Client and Job, skips over Compensation for some reason
-            parent = current_node[n]
+            parent = param[n]
             node_list.append(recursion_xml_1(parent))
-        if len(current_node[n]) == 0 and current_node[n].text != None:
-            list_info = current_node[n].tag, current_node[n].text
+        if len(param[n]) == 0 and param[n].text != None:
+            list_info = param[n].tag, param[n].text
             node_list.append(list_info)
     for elemnt in node_list:
         print(elemnt)
     return node_list
 
-def recursion_xml_2(current_node):
-    # param_list = ["GOLD.xml", "test.xml"]
-    # for param in param_list:
-    #     print(param)
+'''
+This function is to recursively parse the files that need to be checked against the "gold" xml file. 
+'''
+
+def recursion_xml_2(param):
+    param_list = [gold_root, test_root]
+    for param in param_list:
+        pass
     #!first make sure the market_ids match
     e_test = test_root.findall("Market_ID")
     for i in e_test:
         global term_test 
         term_test = i.text
     node_list_2 = []
-    current_file_length = len(current_node)
+    current_file_length = len(param)
     #shows the path of nodes that have no data but its iterating too many times, need to only loop once
-    # for m in current_node.iter():
+    # for m in param.iter():
     #     if m.text == None:
     #         print("ERROR: MISSING DATA: " + str(test_root.find("./[@source='DH']").tag) + "/" + str(m.tag))
     #         continue
     for n in range(current_file_length):
         #!trying to find any nodes that have nested elements and those nodes are not empty
-        if len(current_node[n]) > 0 and current_node[n].text != None:
+        if len(param[n]) > 0 and param[n].text != None:
             #only returns Client and Job, skips over Compensation for some reason
-            parent = current_node[n]
+            parent = param[n]
             node_list_2.append(recursion_xml_2(parent))
             print("recursion checked")
-        if len(current_node[n]) == 0 and current_node[n].text != None:
-            list_info = current_node[n].tag, current_node[n].text
+        if len(param[n]) == 0 and param[n].text != None:
+            list_info = param[n].tag, param[n].text
             node_list_2.append(list_info)
     for elemnt in node_list_2:
         # print(elemnt)
