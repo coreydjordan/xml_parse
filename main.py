@@ -59,5 +59,8 @@ print(gold_node_list)
 print("\nTest Node List:")
 print(test_node_list)
 
+main_list = list(set(gold_node_list) - set(test_node_list))
+print("ERROR: MISSING DATA: ", main_list)
+
 
    
