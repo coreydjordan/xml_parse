@@ -54,13 +54,12 @@ gold_node_list = recursion_xml(gold_root)
 #declare test_node_list to whatever the return from the recursion_xml with using the test xml file
 test_node_list = recursion_xml(test_root, compare_market_id=True)
 #just formatting the output better
-print("Gold Node List:")
-print(gold_node_list)
-print("\nTest Node List:")
-print(test_node_list)
+
 
 main_list = list(set(gold_node_list) - set(test_node_list))
-print("ERROR: MISSING DATA: ", main_list)
+for element in main_list:
+    #prints the data that is in gold but not in test
+    print("ERROR MISSING DATA: ", str(test_root), "/", test_root.findall(f"{element}"))
 
 
    

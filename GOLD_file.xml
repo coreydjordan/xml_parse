@@ -1,7 +1,7 @@
 <Request source="EMT"> <!--gold_root-->
-    <Market_ID>12345</Market_ID>
-    <Id>12524862</Id><!--gold_root[0]-->
-    <Client><!--gold_root[1]-->
+    <Market_ID>12345</Market_ID><!--gold_root[0]-->
+    <Id>12524862</Id><!--gold_root[1]-->
+    <Client>
         <Name>Bob</Name>
         <Phone>920-555-1234</Phone>
         <TimeOfDay>Afternoon</TimeOfDay>
