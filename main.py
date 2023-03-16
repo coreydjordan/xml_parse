@@ -1,4 +1,5 @@
 import xml.etree.ElementTree as ET
+from collections.abc import Iterable
 
 # Parse XML files
 gold_tree = ET.parse('GOLD_file.xml')
@@ -37,19 +38,26 @@ def recursion_xml(param, compare_market_id=False):
             #if the node has no children, just append the tag to the node_list
         if len(param[n]) == 0 and param[n].text != None:
             node_list.append(param[n].tag)
-            
+    #inner function used to "flatten" the nested list 
+    def flatten_list(items, ignore_types=(str, bytes)):
+        for v in items:
+            if isinstance(v, Iterable) and not isinstance(v, ignore_types):
+                yield from flatten_list(v)
+            else:
+                yield v
+    
+    node_list = list(flatten_list(node_list))
     return node_list
 
 #declare gold_node_list to whatever the return from the recursion_xml with using the gold xml file
 gold_node_list = recursion_xml(gold_root)
 #declare test_node_list to whatever the return from the recursion_xml with using the test xml file
 test_node_list = recursion_xml(test_root, compare_market_id=True)
-
-
 #just formatting the output better
 print("Gold Node List:")
 print(gold_node_list)
 print("\nTest Node List:")
 print(test_node_list)
+
 
    
