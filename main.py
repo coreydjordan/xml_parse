@@ -1,93 +1,55 @@
 import xml.etree.ElementTree as ET
-import sys
 
-#could check if the xpaths match?
-
-#parse xml files
+# Parse XML files
 gold_tree = ET.parse('GOLD_file.xml')
 test_tree = ET.parse('test.xml')
 sample_tree = ET.parse('sample_1.xml')
 gold_root = gold_tree.getroot()
 test_root = test_tree.getroot()
 
-'''
-This recursion function takes one parameter, it gets the length of the xml file and does a loop within that range. if the tag is found, it will append the .node_list from that tag to a list called "node_list". If it finds a tag that has children (this is static for the moment) then it will run the recrsion on with that section of the xml as the new parameter, it will run through the whole function again. 
+#set compare_market_id to False intitially
+def recursion_xml(param, compare_market_id=False):
+    #if compare_market_id is true
+    if compare_market_id:
+        e_gold = gold_root.findall("Market_ID")
+        for i_gold in e_gold:
+            term_gold = i_gold.text
 
-The plan is to append all the values that come out of this function to a list, then do the same by plugging in the other xml file as the parameter, then comparing the lists to see if they all have the same values. 
+        e_test = param.findall("Market_ID")
+        for i_test in e_test:
+            term_test = i_test.text
 
-Make sure MARKET_ID and LETTER_TYPE match
-
-Iterate over all files in database and plugging them into the parameters of the function
-'''
-
-'''
-This first function is to recursively parse the "gold" xml file, the one that the other files will be compared to.
-'''
-      
-def recursion_xml_1(param):
-    param_list = [gold_root, test_root]
-    #xpath to the market_id node
-    e_gold = gold_root.findall("Market_ID")
-    #iterate over the e_gold variable because it is a list
-    for i_gold in e_gold:
-        #set the term_gold as a global variable so it can be accessed outside of the function
-        global term_gold
-        term_gold = i_gold.text
-        #if the Market_ID from the test.xml and gold.xml do not match, an exception will be raised and the program will stop
-    if term_test != term_gold:
-        raise Exception("The Market IDs do not match")
-    global node_list 
+            if term_test != term_gold:
+                #stops the function if the market_IDs don't match
+                raise Exception("The Market IDs do not match")
+    #initialize empty list
     node_list = []
+    #declare length of file
     current_file_length = len(param)
+    #iterate over the length of the file
     for n in range(current_file_length):
-        #trying to find any nodes that have nested elements 
-        # print("param = ",param[n])
+        #if the node has children and the text inside is not None
         if len(param[n]) > 0 and param[n].text != None:
-            # print("param = ",param[n])
-            #only returns Client and Job, skips over Compensation for some reason
+            #parent is now the same as param[n]
             parent = param[n]
-            node_list.append(recursion_xml_1(parent))
+            #append whatever the return from the recustion_xml function with the new parent variable to the node_list
+            node_list.append(recursion_xml(parent, compare_market_id))
+            #if the node has no children, just append the tag to the node_list
         if len(param[n]) == 0 and param[n].text != None:
-            list_info = param[n].tag, param[n].text
-            node_list.append(list_info)
-    
+            node_list.append(param[n].tag)
+            
     return node_list
 
-'''
-This function is to recursively parse the files that need to be checked against the "gold" xml file. 
-'''
+#declare gold_node_list to whatever the return from the recursion_xml with using the gold xml file
+gold_node_list = recursion_xml(gold_root)
+#declare test_node_list to whatever the return from the recursion_xml with using the test xml file
+test_node_list = recursion_xml(test_root, compare_market_id=True)
 
-def recursion_xml_2(param):
-    #!first make sure the market_ids match
-    e_test = test_root.findall("Market_ID")
-    for i in e_test:
-        global term_test 
-        term_test = i.text
-    global node_list_2 
-    node_list_2 = []
-    current_file_length = len(param)
-    param_list = [gold_root, test_root]
-    for param in param_list:
-    #!shows the path of nodes that have no data but its iterating too many times, need to only loop once
-    # for m in param.iter():
-    #     if m.text == None:
-    #         print("ERROR: MISSING DATA: " + str(test_root.find("./[@source='DH']").tag) + "/" + str(m.tag))
-    #         continue
-        for n in range(current_file_length):
-            #trying to find any nodes that have nested elements and those nodes are not empty
-            
-            if len(param[n]) > 0 and param[n].text != None:
-                #only returns Client and Job, skips over Compensation for some reason
-                parent = param[n]
-                node_list_2.append(recursion_xml_2(parent))
-                print(node_list_2)
-            if len(param[n]) == 0 and param[n].text != None:
-                list_info = param[n].tag, param[n].text
-                node_list_2.append(list_info)
-        
-        return node_list_2
 
-print(recursion_xml_2(test_root))
-recursion_xml_1(gold_root)
+#just formatting the output better
+print("Gold Node List:")
+print(gold_node_list)
+print("\nTest Node List:")
+print(test_node_list)
 
    

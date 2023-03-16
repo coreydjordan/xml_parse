@@ -9,7 +9,7 @@
     <Frequency />
     <Job>
         <Location>Remote</Location>
-        <Contact />
+        <!-- <Contact /> -->
         <Compensation>
             <Rate>50</Rate>
             <UnitOfMeasure>$/Hour</UnitOfMeasure>
