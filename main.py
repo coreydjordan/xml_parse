@@ -75,8 +75,8 @@ def get_xpath():
             #if the above condition is met, set parent_of_parent to be the parent of whatever the node at the parent level of e is
             parent_of_parent = str(gold_root.find(f".//{parent}/..")).split(" ")[1].strip("'")
             #if the parent_of_parent is Request, set gold_root_strip to be an empty string, this is to prevent Request/Request/Job/TimeOfDay
-            # if gold_root_strip == parent_of_parent:
-            #     gold_root_strip = ""
+            if gold_root_strip == parent_of_parent:
+                gold_root_strip = ""
             print("ERROR: MISSING DATA:" + gold_root_strip + parent_of_parent + "/" + parent + "/" + e)
 
 #call the function
