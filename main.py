@@ -49,17 +49,38 @@ def recursion_xml(param, compare_market_id=False):
     node_list = list(flatten_list(node_list))
     return node_list
 
+'''
+This function gets the xpath of the elements that are in the gold xml but not the compare xml'''
+def get_xpath():
+    #instead of <Element 'Request' at 00223949eda03>, this make it to only show Request
+    gold_root_strip = (str(gold_root).split(" ")[1].strip("'"))
+    #iterate over the main list to get the elements
+    for e in main_list:
+        #sets the parent variable to be the parent elements of e
+        parent = str(gold_root.find(f".//{e}/..")).split(" ")[1].strip("'")
+        # print(parent)
+        #if the parent is not, in this case 'Request', continue the loop
+        if parent != gold_root_strip:
+            #if the above condition is met, set parent_of_parent to be the parent of whatever the node at the parent level of e is
+            parent_of_parent = str(gold_root.find(f".//{parent}/..")).split(" ")[1].strip("'")
+            #if the parent_of_parent is Request, set gold_root_strip to be an empty string, this is to prevent Request/Request/Job/TimeOfDay
+            if gold_root_strip == parent_of_parent:
+                gold_root_strip = ""
+            print(gold_root_strip + parent_of_parent + "/" + parent + "/" + e)
+
+#call the function
+get_xpath()
+
 #declare gold_node_list to whatever the return from the recursion_xml with using the gold xml file
 gold_node_list = recursion_xml(gold_root)
 #declare test_node_list to whatever the return from the recursion_xml with using the test xml file
 test_node_list = recursion_xml(test_root, compare_market_id=True)
-#just formatting the output better
 
 
 main_list = list(set(gold_node_list) - set(test_node_list))
-for element in main_list:
-    #prints the data that is in gold but not in test
-    print("ERROR MISSING DATA: ", str(test_root), "/", test_root.findall(f"{element}"))
 
 
-   
+
+
+    
+
