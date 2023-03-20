@@ -77,7 +77,7 @@ def get_xpath():
             #if the parent_of_parent is Request, set gold_root_strip to be an empty string, this is to prevent Request/Request/Job/TimeOfDay
             if gold_root_strip == parent_of_parent:
                 gold_root_strip = ""
-            print("ERROR: MISSING DATA:" + gold_root_strip + parent_of_parent + "/" + parent + "/" + e)
+            print("ERROR: MISSING DATA: "+ "/" + gold_root_strip + parent_of_parent + "/" + parent + "/" + e)
 
 #call the function
 get_xpath()
