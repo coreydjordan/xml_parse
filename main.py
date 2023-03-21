@@ -1,5 +1,7 @@
 import xml.etree.ElementTree as ET
 from collections.abc import Iterable
+from lxml import etree
+from lxml.html.soupparser import fromstring
 
 # Parse XML files
 gold_tree = ET.parse('GOLD_file.xml')
@@ -29,8 +31,8 @@ def recursion_xml(param, compare_market_id=False):
     current_file_length = len(param)
     #iterate over the length of the file
     for n in range(current_file_length):
-        #if the node has children and the text inside is not None
-        if len(param[n]) > 0 and param[n].text != None:
+        #if the node has children
+        if len(param[n]) > 0:
             #parent is now the same as param[n]
             parent = param[n]
             #append whatever the return from the recustion_xml function with the new parent variable to the node_list
@@ -50,40 +52,22 @@ def recursion_xml(param, compare_market_id=False):
 
     return node_list
 
-
-
-
 #declare gold_node_list to whatever the return from the recursion_xml with using the gold xml file
 gold_node_list = recursion_xml(gold_root)
-#declare test_node_list to whatever the return from the recursion_xml with using the test xml file
+# #declare test_node_list to whatever the return from the recursion_xml with using the test xml file
 test_node_list = recursion_xml(test_root, compare_market_id=True)
+# print("Gold Node List:")
+# print(gold_node_list)
+# print("\nTest Node List:")
+# print(test_node_list)
 
 main_list = list(set(gold_node_list) - set(test_node_list))
 
-'''
-This function gets the xpath of the elements that are in the gold xml but not the compare xml'''
-def get_xpath():
-    #instead of <Element 'Request' at 00223949eda03>, this make it to only show Request
-    gold_root_strip = (str(gold_root).split(" ")[1].strip("'"))
-    #iterate over the main list to get the elements
-    for e in main_list:
-        #sets the parent variable to be the parent elements of e
-        parent = str(gold_root.find(f".//{e}/..")).split(" ")[1].strip("'")
-        # print(parent)
-        #if the parent is not, in this case 'Request', continue the loop
-        if parent != gold_root_strip:
-            #if the above condition is met, set parent_of_parent to be the parent of whatever the node at the parent level of e is
-            parent_of_parent = str(gold_root.find(f".//{parent}/..")).split(" ")[1].strip("'")
-            #if the parent_of_parent is Request, set gold_root_strip to be an empty string, this is to prevent Request/Request/Job/TimeOfDay
-            if gold_root_strip == parent_of_parent:
-                gold_root_strip = ""
-            print("ERROR: MISSING DATA: "+ "/" + gold_root_strip + parent_of_parent + "/" + parent + "/" + e)
+#lxml.etree._ElementTree
+root = etree.parse(open('GOLD_file.xml'))
 
-#call the function
-get_xpath()
-
-
-
-
-    
+for e in root.iter():
+    for i in main_list:
+        if e.tag == i:
+            print(root.getpath(e))
 
